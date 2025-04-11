@@ -9,20 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "next": "latest", // Use the latest version
+    "next": "latest",
     "react": "latest",
     "react-dom": "latest"
-    // Add other dependencies if needed
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.19", // For Tailwind
-    "postcss": "^8.4.38",    // For Tailwind
-    "tailwindcss": "^3.4.3", // For Tailwind
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.3",
     "eslint": "latest",
     "eslint-config-next": "latest"
-     // Add typescriptdevDependencies if using TS
-     // "typescript": "latest",
-     // "@types/react": "latest",
-     // "@types/node": "latest"
   }
 }
