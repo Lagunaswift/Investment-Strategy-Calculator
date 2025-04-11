@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Add any other global custom styles below */
+body {
+  /* Example: set a default background */
+  @apply bg-gray-100;
+}
