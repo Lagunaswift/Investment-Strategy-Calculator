@@ -1,0 +1,28 @@
+{
+  "name": "portfolio-calculator-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "latest", // Use the latest version
+    "react": "latest",
+    "react-dom": "latest"
+    // Add other dependencies if needed
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.19", // For Tailwind
+    "postcss": "^8.4.38",    // For Tailwind
+    "tailwindcss": "^3.4.3", // For Tailwind
+    "eslint": "latest",
+    "eslint-config-next": "latest"
+     // Add typescriptdevDependencies if using TS
+     // "typescript": "latest",
+     // "@types/react": "latest",
+     // "@types/node": "latest"
+  }
+}
