@@ -5,5 +5,95 @@
 /* Add any other global custom styles below */
 body {
   /* Example: set a default background */
-  @apply bg-gray-100;
+  @apply bg-gray-100; /* Using a neutral pastel-friendly grey */
+}
+
+/* --- Portfolio Calculator Color Overrides --- */
+
+/* General UI Elements (Backgrounds, Borders, Text) */
+.bg-white { background-color: #ffffff !important; }
+.bg-gray-50 { background-color: #f9fafb !important; }
+.bg-gray-100 { background-color: #f3f4f6 !important; }
+.bg-gray-200 { background-color: #e5e7eb !important; }
+.border-gray-100 { border-color: #f3f4f6 !important; }
+.border-gray-200 { border-color: #e5e7eb !important; }
+.border-gray-300 { border-color: #d1d5db !important; }
+.text-gray-500 { color: #6b7280 !important; } /* Slightly adjusted gray */
+.text-gray-600 { color: #4b5563 !important; }
+.text-gray-700 { color: #374151 !important; }
+.text-gray-800 { color: #1f2937 !important; }
+
+/* Primary Actions / Selected States (Originally Blue) -> Using Pastel Blue */
+.bg-blue-50 { background-color: #f0f9ff !important; }
+.bg-blue-100 { background-color: #e0f2fe !important; }
+.border-blue-100 { border-color: #e0f2fe !important; }
+.border-blue-200 { border-color: #bae6fd !important; }
+.border-blue-400 { border-color: #7dd3fc !important; } /* Selected Risk Level */
+.text-blue-600 { color: #0ea5e9 !important; }
+.text-blue-700 { color: #0284c7 !important; }
+.text-blue-800 { color: #0369a1 !important; } /* Darker blue for contrast */
+.bg-blue-600 { background-color: #38bdf8 !important; } /* Main Buttons */
+.hover\:bg-blue-700:hover { background-color: #0ea5e9 !important; } /* Button Hover */
+.focus\:ring-blue-500:focus { /* Keep ring color noticeable */
+  --tw-ring-opacity: 1;
+  --tw-ring-color: #38bdf8 !important; /* Or #0ea5e9 */
+}
+
+
+/* Asset Allocation Colors */
+/* US Stocks (Originally Blue) -> Lilac */
+.bg-blue-500 { background-color: #a855f7 !important; } /* Bar Segment - Using a stronger lilac */
+/* Re-target specific elements if needed for lighter lilac */
+/* Example: .bg-blue-50 used for ETF background -> Map to Lilac Lightest */
+.bg-blue-50 { background-color: #f5f3ff !important; }
+.border-blue-100 { border-color: #ede9fe !important; }
+.text-blue-800 { color: #6d28d9 !important; } /* Ensure contrast */
+.text-blue-600 { color: #8b5cf6 !important; }
+
+/* Global Stocks (Originally Green) -> Soft Mint */
+.bg-green-500 { background-color: #14b8a6 !important; } /* Bar Segment - Stronger Mint */
+.bg-green-50 { background-color: #f0fdfa !important; }
+.border-green-100 { border-color: #ccfbf1 !important; }
+.text-green-800 { color: #0d9488 !important; }
+.text-green-600 { color: #14b8a6 !important; }
+.text-green-700 { color: #0f766e !important; } /* Projection Optimistic */
+
+/* Bonds (Originally Yellow) -> Pale Peach */
+.bg-yellow-500 { background-color: #f97316 !important; } /* Bar Segment - Stronger Peach */
+.bg-yellow-50 { background-color: #fff7ed !important; }
+.border-yellow-100 { border-color: #ffedd5 !important; }
+.text-yellow-800 { color: #c2410c !important; } /* Darker Peach for text */
+.text-yellow-600 { color: #f97316 !important; }
+.text-yellow-700 { color: #ea580c !important; } /* Wyckoff Phase Tag */
+
+/* Crypto (Originally Purple/Indigo/Orange) */
+/* Main Crypto Bar Segment (Purple) -> Deeper Lilac/Purple */
+.bg-purple-500 { background-color: #9333ea !important; }
+/* Bitcoin (Orange) -> Pale Coral */
+.bg-orange-50 { background-color: #fff1f2 !important; } /* Lighter coral base */
+.border-orange-100 { border-color: #ffe4e6 !important; }
+.text-orange-800 { color: #e11d48 !important; } /* Darker coral/rose text */
+.text-orange-600 { color: #f43f5e !important; }
+/* Ethereum (Indigo) -> Pastel Blue/Lilac Mix? Let's use the Pastel Blue */
+.bg-indigo-50 { background-color: #f0f9ff !important; }
+.border-indigo-100 { border-color: #e0f2fe !important; }
+.text-indigo-800 { color: #0369a1 !important; }
+.text-indigo-600 { color: #0ea5e9 !important; }
+
+/* Warnings / Risk / Pessimistic (Originally Red) -> Soft Pink */
+.bg-red-50 { background-color: #fdf2f8 !important; }
+.border-red-200 { border-color: #fbcfe8 !important; }
+.text-red-800 { color: #be185d !important; } /* Darker pink */
+.text-red-600 { color: #db2777 !important; }
+.text-red-700 { color: #be185d !important; } /* Projection Pessimistic */
+.bg-red-100 { background-color: #fce7f3 !important; } /* Wyckoff Phase Tag */
+
+/* Info/Note Boxes (Originally Teal) -> Soft Mint */
+.bg-teal-50 { background-color: #f0fdfa !important; }
+.border-teal-200 { border-color: #99f6e4 !important; }
+.text-teal-800 { color: #0d9488 !important; }
+
+/* Ensure white text on darker backgrounds is still readable */
+.text-white { color: #ffffff !important; }
+/* You might need to adjust specific dark text colors if contrast is poor on the new pastel backgrounds */
 }
