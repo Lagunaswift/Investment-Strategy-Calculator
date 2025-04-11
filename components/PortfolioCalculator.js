@@ -740,7 +740,7 @@ const PortfolioCalculator = () => {
                      <li>Tech sector emphasis recommended due to Nasdaq's relative strength.</li>
                      <li>Lower allocation to UK markets based on FTSE 100 technical weakness.</li>
                      <li>Higher Bitcoin allocation within crypto due to its relative strength.</li>
-                     <li>Consider rebalancing quarterly if allocations drift significantly (e.g., >5%).</li>
+                    <li>Consider rebalancing quarterly if allocations drift significantly (e.g., &gt;5%).</li>
                  </ul>
                  {/* Risk Profile Text */}
                  <h4 className="font-medium text-blue-800 mt-4 mb-2 text-sm">
