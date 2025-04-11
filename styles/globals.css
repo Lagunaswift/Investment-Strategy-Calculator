@@ -96,4 +96,3 @@ body {
 /* Ensure white text on darker backgrounds is still readable */
 .text-white { color: #ffffff !important; }
 /* You might need to adjust specific dark text colors if contrast is poor on the new pastel backgrounds */
-}
