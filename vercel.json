@@ -1,0 +1,9 @@
+// vercel.json (or add to existing configuration)
+{
+  "crons": [
+    {
+      "path": "/api/run-analysis", // Create an API route that calls runAnalysisForAllAssets()
+      "schedule": "0 1 * * 1-5" // Example: Run 1 AM UTC on weekdays
+    }
+  ]
+}
