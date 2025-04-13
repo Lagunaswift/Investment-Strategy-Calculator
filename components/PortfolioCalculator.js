@@ -26,7 +26,7 @@ import RecentPerformance from './calculator/RecentPerformance'; // Import Recent
 import RiskProfileSummary from './calculator/RiskProfileSummary'; // Import RiskProfileSummary
 import PerformanceComparison from './calculator/PerformanceComparison'; // Import PerformanceComparison
 import TaxImpactEstimator from './calculator/TaxImpactEstimator'; // Import TaxImpactEstimator
-import RecentPerformance from './calculator/RecentPerformance';
+
 
 // Helper function to format currency
 const formatCurrency = (value, currency) => {
