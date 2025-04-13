@@ -17,7 +17,6 @@ import SimulationControls from './calculator/SimulationControls'; // Import Simu
 import SimulationResultsDisplay from './calculator/SimulationResultsDisplay'; // Import SimulationResultsDisplay
 import AllocationChart from './calculator/AllocationChart'; // Import AllocationChart
 import ProjectionChart from './calculator/ProjectionChart'; // Import ProjectionChart
-// Removed redundant MarketAnalysis and StrategyNotes components
 import TaxEfficiency from './calculator/TaxEfficiency';
 import ExportControls from './calculator/ExportControls'; // Import ExportControls
 import InvestmentOptionsConfig from './calculator/InvestmentOptionsConfig'; // Import InvestmentOptionsConfig
@@ -27,6 +26,7 @@ import RecentPerformance from './calculator/RecentPerformance'; // Import Recent
 import RiskProfileSummary from './calculator/RiskProfileSummary'; // Import RiskProfileSummary
 import PerformanceComparison from './calculator/PerformanceComparison'; // Import PerformanceComparison
 import TaxImpactEstimator from './calculator/TaxImpactEstimator'; // Import TaxImpactEstimator
+import RecentPerformance from './calculator/RecentPerformance';
 
 // Helper function to format currency
 const formatCurrency = (value, currency) => {
@@ -615,38 +615,44 @@ const PortfolioCalculator = () => {
 
                     </Tab.Panel>
 
-                    {/* Insights Tab */}
-                    <Tab.Panel key="Insights" className="rounded-xl bg-white p-3 ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2">
-                        <div className="space-y-6">
-                            <RiskProfileSummary 
-                                riskProfile={riskProfile}
-                                allocations={displayAllocations}
-                                includeCrypto={includeCrypto}
-                                includeGold={includeGold}
-                            />
-                            <PerformanceComparison 
-                                allocations={displayAllocations}
-                                includeCrypto={includeCrypto}
-                                includeGold={includeGold}
-                            />
-                            <RecentPerformance 
-                                allocations={displayAllocations}
-                                includeCrypto={includeCrypto}
-                                includeGold={includeGold}
-                            />
-                            <WyckoffAnalysis 
-                                displayAllocations={displayAllocations}
-                                includeCrypto={includeCrypto}
-                                includeGold={includeGold}
-                            />
-                            <TaxImpactEstimator 
-                                allocations={displayAllocations}
-                                includeCrypto={includeCrypto}
-                                includeGold={includeGold}
-                            />
-                            <TaxEfficiency />
-                        </div>
-                    </Tab.Panel>
+                   {/* Insights Tab */}
+            <Tab.Panel key="Insights" className="rounded-xl bg-white p-3 ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2">
+                <div className="space-y-6">
+                    <RiskProfileSummary
+                        riskProfile={riskProfile}
+                        // Use displayAllocations for consistency if it holds the final percentages
+                        allocations={displayAllocations}
+                        includeCrypto={includeCrypto}
+                        includeGold={includeGold}
+                    />
+                    <PerformanceComparison
+                        allocations={displayAllocations}
+                        includeCrypto={includeCrypto}
+                        includeGold={includeGold}
+                    />
+
+                    {/* --- Add RecentPerformance Here --- */}
+                    <RecentPerformance
+                        // Pass the displayAllocations object directly
+                        allocations={displayAllocations}
+                        includeCrypto={includeCrypto}
+                        includeGold={includeGold}
+                    />
+                    {/* --- End of Added Component --- */}
+
+                    <WyckoffAnalysis
+                        displayAllocations={displayAllocations}
+                        includeCrypto={includeCrypto}
+                        includeGold={includeGold}
+                    />
+                    <TaxImpactEstimator
+                        allocations={displayAllocations}
+                        includeCrypto={includeCrypto}
+                        includeGold={includeGold}
+                    />
+                    <TaxEfficiency />
+                </div>
+            </Tab.Panel>
                 </Tab.Panels>
             </Tab.Group>
 
