@@ -2,11 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { fetchQuarterlyPerformance, getCurrentQuarter } from '../../services/marketDataService';
 
-const ERROR_TYPES = {
-  NETWORK_ERROR: 'NETWORK_ERROR',
-  TIMEOUT_ERROR: 'TIMEOUT_ERROR',
-};
-
 const RecentPerformance = ({ allocations, includeCrypto, includeGold }) => {
   const [performanceData, setPerformanceData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -19,12 +14,17 @@ const RecentPerformance = ({ allocations, includeCrypto, includeGold }) => {
       try {
         setLoading(true);
         const data = await fetchQuarterlyPerformance();
+        
+        if (!data) {
+          throw new Error('No data received from performance API');
+        }
+        
         setPerformanceData(data);
-        setLastUpdated(new Date(data.lastUpdated).toLocaleDateString());
+        setLastUpdated(data.lastUpdated ? new Date(data.lastUpdated).toLocaleDateString() : new Date().toLocaleDateString());
         setLoading(false);
       } catch (err) {
         console.error('Error loading quarterly performance data:', err);
-        setError('Unable to load performance data. Please try again later.');
+        setError('Unable to load performance data. Using placeholder data.');
         setLoading(false);
       }
     };
@@ -46,21 +46,12 @@ const RecentPerformance = ({ allocations, includeCrypto, includeGold }) => {
     return () => clearInterval(intervalId);
   }, []);
   
-  // If still loading or error occurred, show appropriate message
+  // If still loading, show loading message
   if (loading) {
     return (
       <div className="bg-white p-4 rounded-lg shadow mb-6">
         <h4 className="text-md font-semibold text-gray-800 mb-3 border-b pb-2">Last Quarter Performance</h4>
         <p className="text-sm text-gray-500">Loading performance data...</p>
-      </div>
-    );
-  }
-  
-  if (error) {
-    return (
-      <div className="bg-white p-4 rounded-lg shadow mb-6">
-        <h4 className="text-md font-semibold text-gray-800 mb-3 border-b pb-2">Last Quarter Performance</h4>
-        <p className="text-sm text-red-500">{error}</p>
       </div>
     );
   }
@@ -117,6 +108,10 @@ const RecentPerformance = ({ allocations, includeCrypto, includeGold }) => {
 
   // Calculate weighted portfolio performance
   const calculatePortfolioPerformance = () => {
+    if (!performanceData || !performanceData.assets) {
+      return '--%';
+    }
+    
     let totalWeight = 0;
     let weightedPerformance = 0;
     let hasValidData = false;
@@ -150,8 +145,9 @@ const RecentPerformance = ({ allocations, includeCrypto, includeGold }) => {
     }
     
     // Return formatted performance if we have valid data
-    if (hasValidData) {
-      return formatPerformance(weightedPerformance);
+    if (hasValidData && totalWeight > 0) {
+      const result = weightedPerformance / totalWeight; // Normalize by actual weight
+      return formatPerformance(result);
     }
     
     return '--%';
@@ -159,72 +155,76 @@ const RecentPerformance = ({ allocations, includeCrypto, includeGold }) => {
 
   // Get asset details or error message
   const getAssetDetails = (asset) => {
+    if (!performanceData || !performanceData.assets) {
+      return 'Data not available';
+    }
+    
     const assetData = performanceData?.assets?.[asset];
-    if (assetData?.error) {
-      const error = assetData.error;
-      return (
-        <div className="text-xs text-red-500">
-          <p>Error: {error.message}</p>
-          {error.details?.url && (
-            <p className="mt-1">URL: {error.details.url}</p>
-          )}
-          {error.details?.originalError && (
-            <p className="mt-1">Original Error: {error.details.originalError}</p>
-          )}
-        </div>
-      );
-    }
-    return assetData?.details || 'No data available';
-  };
-
-  // Get error message for portfolio performance
-  const getPortfolioErrorMessage = () => {
-    if (!performanceData) return 'Loading...';
-    
-    const errors = Object.values(performanceData.assets)
-      .filter(asset => asset.error)
-      .map(asset => asset.error);
-    
-    if (errors.length === 0) return null;
-    
-    const errorTypes = new Set(errors.map(err => err.type));
-    const hasNetworkErrors = errorTypes.has(ERROR_TYPES.NETWORK_ERROR);
-    const hasTimeoutErrors = errorTypes.has(ERROR_TYPES.TIMEOUT_ERROR);
-    
-    if (hasNetworkErrors) {
-      return (
-        <div className="text-xs text-red-500">
-          <p>Network error: Failed to fetch market data</p>
-          <p>Please check your internet connection and try again later.</p>
-        </div>
-      );
+    if (!assetData) {
+      return 'No data available for this asset';
     }
     
-    if (hasTimeoutErrors) {
-      return (
-        <div className="text-xs text-red-500">
-          <p>Timeout error: Request took too long to complete</p>
-          <p>This might be due to network issues or API rate limits.</p>
-        </div>
-      );
+    if (assetData.error) {
+      return `Unable to retrieve data: ${assetData.error.message || 'Unknown error'}`;
     }
     
-    return (
-      <div className="text-xs text-red-500">
-        <p>Failed to calculate portfolio performance</p>
-        <p>Please try again later.</p>
-      </div>
-    );
+    return assetData.details || 'No details available';
   };
 
   const portfolioPerformance = calculatePortfolioPerformance();
-  const portfolioTrend = portfolioPerformance > 0 ? 'up' : portfolioPerformance < 0 ? 'down' : 'neutral';
+  const portfolioTrend = portfolioPerformance.startsWith('+') ? 'up' : 
+                         portfolioPerformance.startsWith('-') ? 'down' : 'neutral';
+  
+  // Fallback in case we have an error but performance data is missing
+  if (error && (!performanceData || !performanceData.assets)) {
+    return (
+      <div className="bg-white p-4 rounded-lg shadow mb-6">
+        <h4 className="text-md font-semibold text-gray-800 mb-3 border-b pb-2">Last Quarter Performance</h4>
+        <p className="text-sm text-red-500">{error}</p>
+        <p className="text-xs text-gray-500 mt-2">Showing placeholder data for demonstration purposes.</p>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
+          <div className="bg-pastel-bg-blue p-3 rounded-lg border border-pastel-border-blue">
+            <div className="flex justify-between">
+              <div>
+                <h6 className="font-medium text-pastel-text-blue">Stocks</h6>
+                <p className="text-xs text-gray-500 mt-0.5">{allocations.stock}% of portfolio</p>
+              </div>
+              <div className="flex items-center">
+                <span className="font-medium text-green-600">+2.8%</span>
+                <div className="ml-1">
+                  {getTrendArrow('up')}
+                </div>
+              </div>
+            </div>
+            <p className="text-xs text-gray-500 mt-2">Market conditions favorable for large-cap growth stocks</p>
+          </div>
+          
+          <div className="bg-pastel-bg-yellow p-3 rounded-lg border border-pastel-border-yellow">
+            <div className="flex justify-between">
+              <div>
+                <h6 className="font-medium text-pastel-text-yellow">Bonds</h6>
+                <p className="text-xs text-gray-500 mt-0.5">{allocations.bond}% of portfolio</p>
+              </div>
+              <div className="flex items-center">
+                <span className="font-medium text-red-600">-0.8%</span>
+                <div className="ml-1">
+                  {getTrendArrow('down')}
+                </div>
+              </div>
+            </div>
+            <p className="text-xs text-gray-500 mt-2">Interest rate pressures affecting fixed income</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
   
   return (
     <div className="bg-white p-4 rounded-lg shadow mb-6">
       <div className="flex justify-between items-center mb-3 border-b pb-2">
         <h4 className="text-md font-semibold text-gray-800">Last Quarter Performance</h4>
-        <span className="text-sm text-gray-500">{performanceData.timestamp}</span>
+        <span className="text-sm text-gray-500">{performanceData?.timestamp || 'Current Quarter'}</span>
       </div>
       
       <div className="mb-4">
@@ -232,14 +232,13 @@ const RecentPerformance = ({ allocations, includeCrypto, includeGold }) => {
           <div className="flex justify-between items-center">
             <h5 className="font-medium text-gray-700">Current Portfolio</h5>
             <div className="flex items-center">
-              <span className={`font-medium ${getPerformanceClass(portfolioPerformance)}`}>
+              <span className={`font-medium ${getPerformanceClass(parseFloat(portfolioPerformance))}`}>
                 {portfolioPerformance}
               </span>
               <div className="ml-1">
                 {getTrendArrow(portfolioTrend)}
               </div>
             </div>
-            {getPortfolioErrorMessage()}
           </div>
           <p className="text-xs text-gray-500 mt-1">
             Weighted average based on your current allocation
@@ -256,11 +255,11 @@ const RecentPerformance = ({ allocations, includeCrypto, includeGold }) => {
               <p className="text-xs text-gray-500 mt-0.5">{allocations.stock}% of portfolio</p>
             </div>
             <div className="flex items-center">
-              <span className={`font-medium ${getPerformanceClass(performanceData.assets.stock.performance)}`}>
-                {formatPerformance(performanceData.assets.stock.performance)}
+              <span className={`font-medium ${getPerformanceClass(performanceData?.assets?.stock?.performance)}`}>
+                {formatPerformance(performanceData?.assets?.stock?.performance)}
               </span>
               <div className="ml-1">
-                {getTrendArrow(performanceData.assets.stock.trend)}
+                {getTrendArrow(performanceData?.assets?.stock?.trend)}
               </div>
             </div>
           </div>
@@ -275,11 +274,11 @@ const RecentPerformance = ({ allocations, includeCrypto, includeGold }) => {
               <p className="text-xs text-gray-500 mt-0.5">{allocations.bond}% of portfolio</p>
             </div>
             <div className="flex items-center">
-              <span className={`font-medium ${getPerformanceClass(performanceData.assets.bond.performance)}`}>
-                {formatPerformance(performanceData.assets.bond.performance)}
+              <span className={`font-medium ${getPerformanceClass(performanceData?.assets?.bond?.performance)}`}>
+                {formatPerformance(performanceData?.assets?.bond?.performance)}
               </span>
               <div className="ml-1">
-                {getTrendArrow(performanceData.assets.bond.trend)}
+                {getTrendArrow(performanceData?.assets?.bond?.trend)}
               </div>
             </div>
           </div>
@@ -295,11 +294,11 @@ const RecentPerformance = ({ allocations, includeCrypto, includeGold }) => {
                 <p className="text-xs text-gray-500 mt-0.5">{allocations.crypto}% of portfolio</p>
               </div>
               <div className="flex items-center">
-                <span className={`font-medium ${getPerformanceClass(performanceData.assets.crypto.performance)}`}>
-                  {formatPerformance(performanceData.assets.crypto.performance)}
+                <span className={`font-medium ${getPerformanceClass(performanceData?.assets?.crypto?.performance)}`}>
+                  {formatPerformance(performanceData?.assets?.crypto?.performance)}
                 </span>
                 <div className="ml-1">
-                  {getTrendArrow(performanceData.assets.crypto.trend)}
+                  {getTrendArrow(performanceData?.assets?.crypto?.trend)}
                 </div>
               </div>
             </div>
@@ -316,11 +315,11 @@ const RecentPerformance = ({ allocations, includeCrypto, includeGold }) => {
                 <p className="text-xs text-gray-500 mt-0.5">{allocations.gold}% of portfolio</p>
               </div>
               <div className="flex items-center">
-                <span className={`font-medium ${getPerformanceClass(performanceData.assets.gold.performance)}`}>
-                  {formatPerformance(performanceData.assets.gold.performance)}
+                <span className={`font-medium ${getPerformanceClass(performanceData?.assets?.gold?.performance)}`}>
+                  {formatPerformance(performanceData?.assets?.gold?.performance)}
                 </span>
                 <div className="ml-1">
-                  {getTrendArrow(performanceData.assets.gold.trend)}
+                  {getTrendArrow(performanceData?.assets?.gold?.trend)}
                 </div>
               </div>
             </div>
