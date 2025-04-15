@@ -16,7 +16,7 @@ import ProjectionChart from './calculator/ProjectionChart';
 import TaxEfficiency from './calculator/TaxEfficiency';
 import InvestmentOptionsConfig from './calculator/InvestmentOptionsConfig';
 import CollapsibleSection from './ui/CollapsibleSection';
-import WyckoffAnalysis from './calculator/WyckoffAnalysis';
+// import WyckoffAnalysis from './calculator/WyckoffAnalysis';
 import RecentPerformance from './calculator/RecentPerformance';
 import RiskProfileSummary from './calculator/RiskProfileSummary';
 import PerformanceComparison from './calculator/PerformanceComparison';
@@ -840,7 +840,7 @@ const PortfolioCalculator = () => {
                     />
                     {/* --- End of Added Component --- */}
 
-                    <WyckoffAnalysis
+                    {/* <WyckoffAnalysis */}
                         displayAllocations={displayAllocations}
                         includeCrypto={includeCrypto}
                         includeGold={includeGold}

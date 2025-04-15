@@ -7,6 +7,7 @@ import { WyckoffAnalysisResult } from '@/lib/wyckoffAnalyzer'; // Adjust path
 // Define structure for the fetched data (map of ticker to result)
 type AnalysisData = Record<string, WyckoffAnalysisResult>;
 
+/*
 export default function WyckoffAnalysisDisplay() {
   const [analysisData, setAnalysisData] = useState<AnalysisData | null>(null);
   const [isLoading, setIsLoading] = useState(true);

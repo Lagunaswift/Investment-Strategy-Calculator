@@ -1,4 +1,5 @@
 // components/calculator/WyckoffAnalysis.js
+/*
 import React, { useState, useEffect } from 'react';
 import { fetchWyckoffAnalysis, getCurrentQuarter } from '../../services/marketDataService';
 
