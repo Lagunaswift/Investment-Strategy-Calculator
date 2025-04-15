@@ -17,12 +17,12 @@ const nextConfig = {
   
   // Add environment variables
   env: {
-    API_BASE_URL: process.env.NEXT_PUBLIC_MARKET_API_URL || 'https://www.alphavantage.co'
+    API_BASE_URL: process.env.NEXT_PUBLIC_MARKET_API_URL || ''
   },
   
   // Add image optimization settings
   images: {
-    domains: ['www.alphavantage.co'],
+    domains: [],
     unoptimized: false
   },
   
