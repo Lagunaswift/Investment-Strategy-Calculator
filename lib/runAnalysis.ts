@@ -1,5 +1,5 @@
 // lib/runAnalysis.ts (Conceptual - adapt storage method)
-import { analyzeWyckoff, WyckoffAnalysisResult } from './wyckoffAnalyzer';
+import { analyzeWyckoff, WyckoffAnalysisResult, PolygonBar } from './wyckoffAnalyzer';
 // Choose ONE storage method and import its client/SDK
 // import { kv } from '@vercel/kv'; // Example: Vercel KV
 // import Redis from 'ioredis'; const redis = new Redis(process.env.REDIS_URL); // Example: Upstash/Redis

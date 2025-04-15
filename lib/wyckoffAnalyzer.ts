@@ -2,7 +2,7 @@
 import { sma, atr } from 'technicalindicators'; // Import needed indicators
 
 // Reuse PolygonBar interface from API route or redefine it
-interface PolygonBar {
+export interface PolygonBar {
   o: number; h: number; l: number; c: number; v: number; t: number;
 }
 
