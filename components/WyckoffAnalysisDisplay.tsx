@@ -2,10 +2,10 @@
 'use client'; // Mark as Client Component
 
 import React, { useState, useEffect } from 'react';
-import { WyckoffAnalysisResult } from '@/lib/wyckoffAnalyzer'; // Adjust path
+//import { WyckoffAnalysisResult } from '@/lib/wyckoffAnalyzer'; // Adjust path
 
 // Define structure for the fetched data (map of ticker to result)
-type AnalysisData = Record<string, WyckoffAnalysisResult>;
+// type AnalysisData = Record<string, WyckoffAnalysisResult>;
 
 /*
 export default function WyckoffAnalysisDisplay() {
